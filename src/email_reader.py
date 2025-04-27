@@ -5,7 +5,6 @@ from email.header import decode_header
 import os
 
 
-
 class FetchEmail():
 
     connection = None
@@ -68,32 +67,3 @@ class FetchEmail():
         
         self.error = "Failed to retrieve emails"
         return emails
-
-'''
-
-#Realizar conexão por imap com as credenciais do .env
-imap = IMAP4_SSL(os.getenv("IMAP_SERVER"), os.getenv("IMAP_PORT"), timeout=None)
-
-imap.login(os.getenv("EMAIL_USER"), os.getenv("KEY_CODE"))
-
-#Realizar a busca por emails não lidos
-mailbox = "INBOX"
-imap.select(mailbox)
-
-while(1):
-    status, message_ids = imap.search(None, "UNSEEN")
-
-    if status == "OK":
-        message_ids = message_ids[0].split()
-
-        for message_id in message_ids:
-            status, message_data = imap.fetch(message_id, "(RFC822)")
-            if status == "OK":
-                message = email.message_from_bytes(message_data[0][1])
-                subject, encoding = decode_header(message["subject"])[0]
-                if isinstance(subject, bytes):
-                    subject = subject.decode(encoding or "utf-8")
-
-                print(f"New email: {subject}")
-
-'''
